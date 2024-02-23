@@ -59,7 +59,23 @@ export default function App() {
     };
     fetchCities();
   }, [selectedCountry, selectedState]);
-
+  const Dropdown = ({ options, value, onChange, placeholder, disabled }) => (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="dropdown"
+      disabled={disabled}
+    >
+      <option disabled value="">
+        {placeholder}
+      </option>
+      {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  );
   return (
     <div className="city-selector">
       <h1>Select Location</h1>
@@ -97,21 +113,3 @@ export default function App() {
     </div>
   );
 }
-
-const Dropdown = ({ options, value, onChange, placeholder, disabled }) => (
-  <select
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    className="dropdown"
-    disabled={disabled}
-  >
-    <option disabled value="">
-      {placeholder}
-    </option>
-    {options.map((option) => (
-      <option key={option} value={option}>
-        {option}
-      </option>
-    ))}
-  </select>
-);
