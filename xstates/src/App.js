@@ -1,7 +1,7 @@
-import logo from "./logo.svg";
-import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import "./App.css";
+
 export default function App() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
@@ -60,22 +60,6 @@ export default function App() {
     fetchCities();
   }, [selectedCountry, selectedState]);
 
-  const Dropdown = ({ options, value, onChange, placeholder }) => (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="dropdown"
-    >
-      <option disabled value="">
-        {placeholder}
-      </option>
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  );
   return (
     <div className="city-selector">
       <h1>Select Location</h1>
@@ -91,12 +75,14 @@ export default function App() {
           value={selectedState}
           onChange={setSelectedState}
           placeholder="Select State"
+          disabled={!selectedCountry}
         />
         <Dropdown
           options={cities}
           value={selectedCity}
           onChange={setSelectedCity}
           placeholder="Select City"
+          disabled={!selectedState}
         />
       </div>
       {selectedCity && (
@@ -111,3 +97,21 @@ export default function App() {
     </div>
   );
 }
+
+const Dropdown = ({ options, value, onChange, placeholder, disabled }) => (
+  <select
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    className="dropdown"
+    disabled={disabled}
+  >
+    <option disabled value="">
+      {placeholder}
+    </option>
+    {options.map((option) => (
+      <option key={option} value={option}>
+        {option}
+      </option>
+    ))}
+  </select>
+);
