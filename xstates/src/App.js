@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
-
 export default function App() {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
@@ -9,6 +8,7 @@ export default function App() {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   useEffect(() => {
     axios
@@ -55,6 +55,14 @@ export default function App() {
     }
   }, [selectedCountry, selectedState]);
 
+  useEffect(() => {
+    if (selectedCountry && selectedState && selectedCity) {
+      setSelectedLocation(
+        `${selectedCity}, ${selectedState}, ${selectedCountry}`
+      );
+    }
+  }, [selectedCountry, selectedState, selectedCity]);
+
   return (
     <div className="city-selector">
       <h1>Select Location</h1>
@@ -96,7 +104,7 @@ export default function App() {
           value={selectedCity}
           onChange={(e) => setSelectedCity(e.target.value)}
           className="dropdown"
-          disabled={!selectedCountry && !selectedState}
+          disabled={!selectedCountry || !selectedState}
         >
           <option disabled value="">
             Select City
@@ -110,13 +118,9 @@ export default function App() {
           })}
         </select>
       </div>
-      {selectedCity && (
+      {selectedLocation && (
         <h2 className="result">
-          You selected <span className="highlight">{selectedCity},</span>
-          <span className="fade">
-            {" "}
-            {selectedState},{selectedCountry}
-          </span>
+          You selected <span className="highlight">{selectedLocation}</span>
         </h2>
       )}
     </div>
